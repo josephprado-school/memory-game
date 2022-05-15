@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
-    let buttonContainer = document.querySelector('#button-container')
-    let buttonList = document.querySelectorAll('.colored-button')
-    let newGame = document.querySelector('#new-game')
-    let win = document.querySelector('#win')
+    const buttonContainer = document.querySelector('#button-container')
+    const buttonList = document.querySelectorAll('.colored-button')
+    const newGame = document.querySelector('#new-game')
+    const win = document.querySelector('#win')
     let gameId = ''
     let sequence = []
 
@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // fetches the current state of given game id, including the current button
     // sequence and the win status
     const fetchGame = async (id) => {
-        let cs = await fetch(`/game/${id}`).then(r => r.json())
+        const cs = await fetch(`/game/${id}`).then(r => r.json())
         sequence.push(cs.currentSequence[cs.currentSequence.length - 1])
         sequence.forEach(button => flashButton(button))
         console.log(`Sequence: ${sequence}`)
