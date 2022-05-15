@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let i = 0
         setInterval(() => {
             if (i++ < 2)
-            buttonList[button].classList.toggle('flash')
+                buttonList[button].classList.toggle('flash')
         }, 500)
     }
 
@@ -32,9 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         buttonList.forEach(button => button.setAttribute('disabled', 'false'))
         sequence = []
-        setTimeout(() => {
-            fetchGame(gameId)
-        }, 1000)
+        setTimeout(() => fetchGame(gameId), 1000)
     })
 
     // 
