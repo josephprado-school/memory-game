@@ -95,6 +95,10 @@ footer {
     opacity: 100%;
 }
 
+.colored-button[disabled="true"] {
+    opacity: 100%;
+}
+
 .colored-button:nth-child(1) {
     background-color: red;
 }
