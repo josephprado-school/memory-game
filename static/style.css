@@ -95,7 +95,7 @@ footer {
     opacity: 100%;
 }
 
-.colored-button[disabled="true"] {
+.colored-button[disabled="true"], .flash {
     opacity: 100%;
 }
 
