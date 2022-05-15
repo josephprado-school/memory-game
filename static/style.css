@@ -60,6 +60,8 @@ footer {
     background-color: white;
     color: red;
     opacity: 50%;
+    font-size: x-large;
+    font-weight: bold;
 }
 
 #game-container {
