@@ -1,0 +1,130 @@
+:root {
+    --black: #121212;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body, main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--black);
+    color: white;
+    margin: 0;
+}
+
+body {
+    height: 100vh;
+}
+
+#new-game-container {
+    flex-grow: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#new-game {
+    width: 120px;
+    height: 40px;
+    border-radius: 20px;
+    border: 1px solid white;
+    background-color: var(--black);
+    color: white;
+}
+
+#new-game:hover {
+    border: none;
+    background-color: white;
+    color: var(--black);
+    cursor: pointer;
+}
+
+footer {
+    flex-grow: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    padding-bottom: 20px;
+}
+
+#win {
+    display: none;
+    /* display: flex; */
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    width: 100%;
+    height: 50%;
+    background-color: white;
+    color: red;
+    opacity: 50%;
+}
+
+#game-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    --width: calc(100vw - 20px); /* 10px padding on left/right */
+    width: var(--width);
+    height: var(--width);
+    max-width: 640px;
+    max-height: 640px;
+}
+
+#button-container {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.colored-button {
+    border: none;
+    border-radius: 10%;
+    opacity: 25%;
+}
+
+.colored-button:hover {
+    cursor: pointer;
+    opacity: 100%;
+}
+
+.colored-button:nth-child(1) {
+    background-color: red;
+}
+
+.colored-button:nth-child(2) {
+    background-color: orange;
+}
+
+.colored-button:nth-child(3) {
+    background-color: yellow;
+}
+
+.colored-button:nth-child(4) {
+    background-color: green;
+}
+
+.colored-button:nth-child(5) {
+    background-color: white;
+}
+
+.colored-button:nth-child(6) {
+    background-color: blue;
+}
+
+.colored-button:nth-child(7) {
+    background-color: indigo;
+}
+
+.colored-button:nth-child(8) {
+    background-color: purple;
+}
+
+.colored-button:nth-child(9) {
+    background-color: violet;
+}
