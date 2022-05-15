@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // starts a new game when the user clicks the new game button
     // flashes the first button of a newely generated button sequence
     newGame.addEventListener('click', async () => {
-        let gameId = await fetch('/game', {method: 'POST'}).then(r => r.text())
+        gameId = await fetch('/game', {method: 'POST'}).then(r => r.text())
         console.log(`New game id# ${gameId}`)
         
         buttonList.forEach(button => button.setAttribute('disabled', 'false'))
