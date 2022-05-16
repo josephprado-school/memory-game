@@ -8,12 +8,21 @@ document.addEventListener('DOMContentLoaded', () => {
     let polo = []
 
     // flashes the given buttons for the specified count & delay
-    const flashButtons = (buttons, count=1, delay=500) => {
-        let i = 0
-        setInterval(() => {
-            if (i++ < count*2)
-                buttons.forEach(b => buttonList[b].classList.toggle('flash'))
-        }, delay)
+    const flashButtons = async (buttons, count=1, delay=500) => {
+        return new Promise((accept, reject) => {
+            let i = 0
+            setInterval(() => {
+                if (i++ < count*2)
+                    buttons.forEach(b => buttonList[b].classList.toggle('flash'))
+                else
+                    accept()
+            }, delay)
+        })
+    }
+
+    // plays the current button sequence
+    const playMarco = () => {
+        marco.forEach(b => flashButtons([b]))
     }
 
     // fetches the current state of given game id, including the current button
@@ -21,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const fetchGame = async (id) => {
         const cs = await fetch(`/game/${id}`).then(r => r.json())
         marco.push(cs.currentSequence[marco.length])
-        marco.forEach(b => flashButtons([b]))
+        playMarco()
     }
 
     // starts a new game when the user clicks the new game button
@@ -36,12 +45,19 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => fetchGame(gameId), 1000)
     })
 
-    // 
+    // button press logic
+    // if wrong button is pressed at any time, return from fuction
     buttonContainer.addEventListener('click', async (e) => {
         if (e.target && e.target.dataset.num >= 0) {
             polo.push(Number(e.target.dataset.num))
 
-            if (marco.length === polo.length) {
+            if (marco[polo.length-1] !== polo[polo.length-1]) {
+                // wrong button pressed
+                // flash all buttons and replay marco
+                await flashButtons([...Array(buttonList.length).keys()], 3, 200)
+                playMarco()
+            
+            } else if (marco.length === polo.length) {
                 const correct = await fetch(`/game/${gameId}`, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
