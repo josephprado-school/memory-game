@@ -9,12 +9,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // starts a new game when user clicks new game button
     document.querySelector('#new-game').addEventListener('click', async () => {
+        await flashButton([...Array(buttonList.length).keys()], 1, 500)
         buttonList.forEach(b => b.classList.add('inactive'))
         winMsg.classList.add('hidden')
 
         id = await fetch('/game', {method: 'POST'}).then(r => r.text())
         await fetchGame()
-        start()
+        setTimeout(start, 1000)
     })
 
     // fetch game details from server
