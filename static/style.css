@@ -50,8 +50,7 @@ footer {
 }
 
 #win {
-    display: none;
-    /* display: flex; */
+    display: flex;
     justify-content: center;
     align-items: center;
     position: absolute;
@@ -62,6 +61,10 @@ footer {
     opacity: 50%;
     font-size: x-large;
     font-weight: bold;
+}
+
+#win.hidden {
+    visibility: hidden;
 }
 
 #game-container {
@@ -87,15 +90,17 @@ footer {
 .colored-button {
     border: none;
     border-radius: 10%;
-    opacity: 25%;
 }
 
 .colored-button:hover {
     cursor: pointer;
-    opacity: 100%;
 }
 
-.colored-button[disabled="true"], .flash {
+.colored-button.inactive {
+    opacity: 25%;
+}
+
+.colored-button.flash {
     opacity: 100%;
 }
 
