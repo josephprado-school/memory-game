@@ -78,55 +78,46 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
     // handle button presses
-    document.querySelector('#button-container').addEventListener('click', (e) => {
+    document.querySelector('#button-container').addEventListener('click', async (e) => {
         if (e.target && e.target.dataset.num >= 0) {
             polo.push(Number(e.target.dataset.num))
             const n = polo.length
 
             if (marco[n-1] !== polo[n-1]) {
-                (async () => {
-                    await flashButton([...Array(buttonList.length).keys()], 3, 150)
-                    start()
-                })()
+                await flashButton([...Array(buttonList.length).keys()], 3, 150)
+                start()
 
             } else if (n === marco.length) {
                 // verify polo on server
                 // if correct, fetch new game details
                 // otherwise, restart
-                (async () => {
-                    const correct = await fetch(`/game/${id}`, {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify(polo)
-                    })
-                    .then(r => r.text())
-                    .then(r => r === 'true')
-                    
-                    if (correct) {
-                        // fetch new game details
-                        (async () => {
-                            await fetchGame()
+                const correct = await fetch(`/game/${id}`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(polo)
+                })
+                .then(r => r.text())
+                .then(r => r === 'true')
+                
+                if (correct) { // fetch new game details
+                    await fetchGame()
 
-                            if (hasWon) {
-                                // end game
-                                buttonList.forEach(b => {
-                                    b.setAttribute('disabled', 'true')
-                                    b.classList.remove('inactive')
-                                })
-                                winMsg.classList.remove('hidden')
-                            
-                            } else
-                                // round not over, continue
-                                start()
-                        })()
-                        
-                    } else {
-                        // mismatch between server and marco
-                        // error if reach here
-                        console.log('Server-marco mismatch?')
+                    if (hasWon) { // end game
+                        buttonList.forEach(b => {
+                            b.setAttribute('disabled', 'true')
+                            b.classList.remove('inactive')
+                        })
+                        winMsg.classList.remove('hidden')
+
+                    } else // round not over, continue
                         start()
-                    }
-                })()
+
+                } else {
+                    // mismatch between server and marco
+                    // error if reach here
+                    console.log('Server-marco mismatch?')
+                    start()
+                }
             }
         }
     })
