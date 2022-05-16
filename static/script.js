@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const buttonList = document.querySelectorAll('.colored-button')
     const newGame = document.querySelector('#new-game')
     const win = document.querySelector('#win')
+    let gameWon = false
     let gameId = ''
     let marco = []
     let polo = []
@@ -28,11 +29,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // fetches the current state of given game id, including the current button
     // sequence and the win status
     const fetchGame = async (id) => {
-        const cs = await fetch(`/game/${id}`).then(r => r.json())
-        marco.push(cs.currentSequence[marco.length])
-        playMarco()
+        return new Promise((accept, reject) => {
+            (async () => {
+                const game = await fetch(`/game/${id}`).then(r => r.json())
+                marco.push(game.currentSequence[marco.length])
+                gameWon = game.hasWon
+                accept()
+            })()
+        })
     }
-
+    
     // starts a new game when the user clicks the new game button
     // flashes the first button of a newely generated button sequence
     newGame.addEventListener('click', async () => {
@@ -42,7 +48,10 @@ document.addEventListener('DOMContentLoaded', () => {
         buttonList.forEach(b => b.setAttribute('disabled', 'false'))
         marco = []
         polo = []
-        setTimeout(() => fetchGame(gameId), 1000)
+        setTimeout(async () => {
+            await fetchGame(gameId)
+            playMarco()
+        }, 1000)
     })
 
     // button press logic
