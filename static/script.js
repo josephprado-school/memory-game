@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const buttonList = document.querySelectorAll('.colored-button')
     const winMsg = document.querySelector('#win')
+    let disabled = true
     let hasWon = false
     let marco = []
     let polo = []
@@ -8,10 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // starts a new game when user clicks new game button
     document.querySelector('#new-game').addEventListener('click', async () => {
-        buttonList.forEach(b => {
-            b.setAttribute('disabled', 'false')
-            b.classList.add('inactive')
-        })
+        buttonList.forEach(b => b.classList.add('inactive'))
         winMsg.classList.add('hidden')
 
         id = await fetch('/game', {method: 'POST'}).then(r => r.text())
@@ -24,7 +22,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return new Promise((accept, reject) => {
             (async () => {
                 const game = await fetch(`/game/${id}`).then(r => r.json())
-                console.log(game)
                 hasWon = game.hasWon
                 marco = game.currentSequence
                 accept()
@@ -32,16 +29,16 @@ document.addEventListener('DOMContentLoaded', () => {
         })
     }
 
-    const toggleFlash = (buttons) => {
-        buttons.forEach(b => buttonList[b].classList.toggle('flash'))
+    const toggleFlash = (buttonNums) => {
+        buttonNums.forEach(b => buttonList[b].classList.toggle('flash'))
     }
 
     // flashes the specified buttons for the given count and delay
-    const flashButton = async (buttons, count=1, delay=350) => {
+    const flashButton = async (buttonNums, count=1, delay=350) => {
         return new Promise((accept, reject) => {
             let i = 0
             const flash = setInterval(() => {
-                toggleFlash(buttons)
+                toggleFlash(buttonNums)
                 if (++i === count*2) {
                     clearInterval(flash)
                     accept()
@@ -53,12 +50,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // play the current button sequence
     // disable buttons during play
     const playMarco = async () => {
-        buttonList.forEach(b => b.setAttribute('disabled', 'true'))
+        disabled = true
 
         for (let i = 0; i < marco.length; i++)
             await flashButton([marco[i]])
 
-        buttonList.forEach(b => b.setAttribute('disabled', 'false'))
+        disabled = false
     }
 
     // start/restart
@@ -68,18 +65,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     document.querySelector('#button-container').addEventListener('mousedown', (e) => {
-        if (e.target && e.target.dataset.num >= 0)
+        if (e.target && e.target.dataset.num >= 0 && disabled === false)
             e.target.classList.toggle('inactive')
     })
 
     document.querySelector('#button-container').addEventListener('mouseup', (e) => {
-        if (e.target && e.target.dataset.num >= 0)
+        if (e.target && e.target.dataset.num >= 0 && disabled === false)
             e.target.classList.toggle('inactive')
     })
 
     // handle button presses
     document.querySelector('#button-container').addEventListener('click', async (e) => {
-        if (e.target && e.target.dataset.num >= 0) {
+        if (e.target && e.target.dataset.num >= 0 && disabled === false) {
             polo.push(Number(e.target.dataset.num))
             const n = polo.length
 
@@ -103,10 +100,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     await fetchGame()
 
                     if (hasWon) { // end game
-                        buttonList.forEach(b => {
-                            b.setAttribute('disabled', 'true')
-                            b.classList.remove('inactive')
-                        })
+                        disabled = true
+                        buttonList.forEach(b => b.classList.remove('inactive'))
                         winMsg.classList.remove('hidden')
 
                     } else // round not over, continue
