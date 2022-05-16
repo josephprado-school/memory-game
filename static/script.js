@@ -7,13 +7,13 @@ document.addEventListener('DOMContentLoaded', () => {
     let marco = []
     let polo = []
 
-    // flashes the given button for 1/2 second
-    const flashButton = (button) => {
+    // flashes the given buttons for the specified count & delay
+    const flashButtons = (buttons, count=1, delay=500) => {
         let i = 0
         setInterval(() => {
-            if (i++ < 2)
-                buttonList[button].classList.toggle('flash')
-        }, 500)
+            if (i++ < count*2)
+                buttons.forEach(b => buttonList[b].classList.toggle('flash'))
+        }, delay)
     }
 
     // fetches the current state of given game id, including the current button
@@ -21,8 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const fetchGame = async (id) => {
         const cs = await fetch(`/game/${id}`).then(r => r.json())
         marco.push(cs.currentSequence[marco.length])
-        marco.forEach(button => flashButton(button))
-        console.log(cs)
+        marco.forEach(b => flashButtons([b]))
     }
 
     // starts a new game when the user clicks the new game button
@@ -31,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
         gameId = await fetch('/game', {method: 'POST'}).then(r => r.text())
         console.log(`New gameId: ${gameId}`)
         
-        buttonList.forEach(button => button.setAttribute('disabled', 'false'))
+        buttonList.forEach(b => b.setAttribute('disabled', 'false'))
         marco = []
         polo = []
         setTimeout(() => fetchGame(gameId), 1000)
