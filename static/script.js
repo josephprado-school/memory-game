@@ -20,14 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // fetch game details from server
     const fetchGame = async () => {
-        return new Promise((accept, reject) => {
-            (async () => {
-                const game = await fetch(`/game/${id}`).then(r => r.json())
-                hasWon = game.hasWon
-                marco = game.currentSequence
-                accept()
-            })()
-        })
+        const game = await fetch(`/game/${id}`).then(r => r.json())
+        hasWon = game.hasWon
+        marco = game.currentSequence
     }
 
     const toggleFlash = (buttonNums) => {
