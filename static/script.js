@@ -58,13 +58,19 @@ document.addEventListener('DOMContentLoaded', () => {
         playMarco()
     }
 
-    // toggles button's inactive class when clicked
-    const toggleInactive = (e) => {
+    // remove highlight when user clicks on (mouseup) or moves off (mouseout) target    
+    ['mouseup', 'mouseout'].forEach(s => {
+        document.querySelector('#button-container').addEventListener(s, (e) => {
+            if (e.target && e.target.dataset.num >= 0 && disabled === false)
+                e.target.classList.add('inactive')
+        })
+    })
+
+    // highlight when user press or holds on target
+    document.querySelector('#button-container').addEventListener('mousedown', (e) => {
         if (e.target && e.target.dataset.num >= 0 && disabled === false)
-            e.target.classList.toggle('inactive')
-    }
-    document.querySelector('#button-container').addEventListener('mousedown', toggleInactive)
-    document.querySelector('#button-container').addEventListener('mouseup', toggleInactive)
+            e.target.classList.remove('inactive')
+    })
 
     // handle button presses
     // only register presses when not disabled
