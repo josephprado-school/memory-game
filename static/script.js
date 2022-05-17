@@ -73,6 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const n = polo.length
 
             if (marco[n-1] !== polo[n-1]) {
+                disabled = true
                 await flashButton([...Array(buttonList.length).keys()], 3, 150)
                 start()
 
