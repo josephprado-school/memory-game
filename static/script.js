@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let id = ''
 
     // starts a new game when user clicks new game button
+    // flashes all buttons once to indicate start of game
+    // then plays marco
     document.querySelector('#new-game').addEventListener('click', async () => {
         await flashButton([...Array(buttonList.length).keys()], 1, 500)
         buttonList.forEach(b => b.classList.add('inactive'))
@@ -18,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(start, 1000)
     })
 
-    // fetch game details from server
+    // fetches the current game details from the server
     const fetchGame = async () => {
         const game = await fetch(`/game/${id}`).then(r => r.json())
         hasWon = game.hasWon
@@ -40,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // play the current button sequence
-    // disable buttons during play
+    // disable buttons during play and re-enable afterward
     const playMarco = async () => {
         disabled = true
 
@@ -50,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
         disabled = false
     }
 
-    // start/restart
+    // start/restart round
     const start = () => {
         polo = []
         playMarco()
@@ -65,6 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('#button-container').addEventListener('mouseup', toggleInactive)
 
     // handle button presses
+    // only register presses when not disabled
     document.querySelector('#button-container').addEventListener('click', async (e) => {
         if (e.target && e.target.dataset.num >= 0 && disabled === false) {
             polo.push(Number(e.target.dataset.num))
