@@ -11,9 +11,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // flashes all buttons once to indicate start of game
     // then plays marco
     document.querySelector('#new-game').addEventListener('click', async () => {
-        await flashButton([...Array(buttonList.length).keys()], 1, 500)
-        buttonList.forEach(b => b.classList.add('inactive'))
+        disabled = true
         winMsg.classList.add('hidden')
+        
+        // skip flash after win
+        if (!hasWon)
+            await flashButton([...Array(buttonList.length).keys()], 1, 500)
+        
+            buttonList.forEach(b => b.classList.add('inactive'))
 
         id = await fetch('/game', {method: 'POST'}).then(r => r.text())
         await fetchGame()
