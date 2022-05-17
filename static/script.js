@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return new Promise((accept, reject) => {
             let i = 0
             const flash = setInterval(() => {
-                buttonNums.forEach(b => buttonList[b].classList.toggle('flash'))
+                buttonNums.forEach(b => buttonList[b].classList.toggle('inactive'))
                 if (++i === count*2) {
                     clearInterval(flash)
                     accept()
