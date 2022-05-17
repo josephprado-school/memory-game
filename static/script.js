@@ -56,15 +56,13 @@ document.addEventListener('DOMContentLoaded', () => {
         playMarco()
     }
 
-    document.querySelector('#button-container').addEventListener('mousedown', (e) => {
+    // toggles button's inactive class when clicked
+    const toggleInactive = (e) => {
         if (e.target && e.target.dataset.num >= 0 && disabled === false)
             e.target.classList.toggle('inactive')
-    })
-
-    document.querySelector('#button-container').addEventListener('mouseup', (e) => {
-        if (e.target && e.target.dataset.num >= 0 && disabled === false)
-            e.target.classList.toggle('inactive')
-    })
+    }
+    document.querySelector('#button-container').addEventListener('mousedown', toggleInactive)
+    document.querySelector('#button-container').addEventListener('mouseup', toggleInactive)
 
     // handle button presses
     document.querySelector('#button-container').addEventListener('click', async (e) => {
