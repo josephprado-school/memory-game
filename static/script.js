@@ -25,16 +25,12 @@ document.addEventListener('DOMContentLoaded', () => {
         marco = game.currentSequence
     }
 
-    const toggleFlash = (buttonNums) => {
-        buttonNums.forEach(b => buttonList[b].classList.toggle('flash'))
-    }
-
     // flashes the specified buttons for the given count and delay
     const flashButton = async (buttonNums, count=1, delay=350) => {
         return new Promise((accept, reject) => {
             let i = 0
             const flash = setInterval(() => {
-                toggleFlash(buttonNums)
+                buttonNums.forEach(b => buttonList[b].classList.toggle('flash'))
                 if (++i === count*2) {
                     clearInterval(flash)
                     accept()
