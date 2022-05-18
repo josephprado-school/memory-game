@@ -75,8 +75,8 @@ footer {
     --width: calc(100vw - 20px); /* 10px padding on left/right */
     width: var(--width);
     height: var(--width);
-    max-width: 640px;
-    max-height: 640px;
+    max-width: min(640px, 65vh);
+    max-height: min(640px, 65vh);
 }
 
 #button-container {
